@@ -38,13 +38,13 @@ LEFT JOIN orders o ON u.id = o.user_id
 GROUP BY u.id, u.name;
 
 設問８：
-SELECT 
-  u.name,
-  SUM(p.price * oi.quantity) AS total_amount
-FROM users u
-JOIN orders o ON u.id = o.user_id
-JOIN order_items oi ON o.id = oi.order_id
-JOIN products p ON oi.product_id = p.id
+SELECT
+  u.name, 
+  SUM(p.price * oi.quantity) AS total_amount 
+FROM users u 
+LEFT JOIN orders o ON u.id = o.user_id 
+LEFT JOIN order_items oi ON o.id = oi.order_id 
+LEFT JOIN products p ON oi.product_id = p.id 
 GROUP BY u.id, u.name;
 
 設問９：
@@ -60,12 +60,11 @@ ORDER BY total_amount DESC
 LIMIT 1;
 
 設問１０：
-SELECT 
-  p.product_name,
-  SUM(oi.quantity) AS total_quantity
-FROM order_items oi
-JOIN products p ON oi.product_id = p.id
-GROUP BY p.id, p.product_name;
+SELECT p.id, p.products_name, COUNT(oi.order_id) AS order_count
+FROM products p
+LEFT JOIN order_items oi ON p.id = oi.id
+LEFT JOIN orders o ON oi.order_id = o.id
+GROUP BY p.id, p.product_name;	
 
 設問１１：
 SELECT u.name
@@ -110,9 +109,12 @@ ORDER BY total_quantity DESC
 LIMIT 1;
 
 設問１６：
-SELECT COUNT(*) AS order_count
+SELECT 
+  DATE_FORMAT(order_date, '%Y-%m') AS month,
+  COUNT(*) AS order_count
 FROM orders
-WHERE MONTH(order_date) = 8;
+GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+ORDER BY month;
 
 設問１７：
 SELECT p.product_name

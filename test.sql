@@ -62,7 +62,7 @@ LIMIT 1;
 設問１０：
 SELECT p.id, p.products_name, COUNT(oi.order_id) AS order_count
 FROM products p
-LEFT JOIN order_items oi ON p.id = oi.id
+LEFT JOIN order_items oi ON p.id = oi.product_id
 LEFT JOIN orders o ON oi.order_id = o.id
 GROUP BY p.id, p.product_name;	
 
